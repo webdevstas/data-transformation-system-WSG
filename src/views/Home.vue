@@ -1,11 +1,7 @@
 <template>
   <div class="home">
     <h1>Учёт расходов</h1>
-    <div class="alert"
-         v-if="alertOpened"
-         :class="response.status === 'received' ? 'success' : 'danger'">
-      {{ response.msg }}
-    </div>
+    <AppAlert :type="alertType" :title="alertTitle" :visibility="alertOpened" @alertClosed="alertOpened = false"/>
     <h2>Введи свои покупки</h2>
     <form @submit.prevent="sendData">
       <AppInputBlock v-for="n in inputsArr" :key="n" :countInp="countInp" @onData="handleInpData"/>
@@ -22,11 +18,14 @@
 </template>
 
 <script>
-import AppInputBlock from '@/components/AppInputBlock'
+import AppInputBlock from '@/components/ui/AppInputBlock'
+import AppAlert from '@/components/ui/AppAlert'
+
+// TODO: валидация полей и сброс полей формы
 
 export default {
   name: 'Home',
-  components: {AppInputBlock},
+  components: {AppAlert, AppInputBlock},
   emits: ['inputAdded'],
   data() {
     return {
@@ -35,7 +34,9 @@ export default {
       inputsData: [],
       name: '',
       response: {},
-      alertOpened: false
+      alertOpened: false,
+      alertTitle: '',
+      alertType: ''
     }
   },
   methods: {
@@ -48,10 +49,13 @@ export default {
         }
       }).then((res) => {
         this.response = res.data
-        this.openAlert()
+        this.openAlert(this.response.msg, this.response.status === 'failed' ? 'danger' : 'success')
         this.countInp = 0
         this.inputsArr = [0]
         this.inputsData = []
+      }).catch(err => {
+        console.log(err)
+        this.openAlert('Ошибка при отправке на сервер!', 'danger')
       })
     },
     addNewBlock() {
@@ -60,11 +64,10 @@ export default {
     handleInpData(dataInp) {
       this.inputsData[this.countInp] = dataInp
     },
-    openAlert() {
+    openAlert(title, type) {
       this.alertOpened = true
-      setTimeout(() => {
-        this.alertOpened = false
-      }, 5000)
+      this.alertTitle = title
+      this.alertType = type
     }
   },
   computed: {
@@ -87,14 +90,6 @@ export default {
   border-radius: 0.25rem
   border: 1px solid #000
   width: max-content
-
-.success
-  color: #42b983
-  border-color: #42b983
-
-.danger
-  color: red
-  border-color: red
 
 .btn
   padding: 5px

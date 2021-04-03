@@ -17,7 +17,9 @@ export default {
   },
   computed: {
     dataObj() {
-      return {name: this.name, price: this.price}
+      const name = this.name.trim().toLowerCase()
+      const price = this.price
+      return {name: name, price: price}
     }
   },
   methods: {
