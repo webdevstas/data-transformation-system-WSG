@@ -21,8 +21,6 @@
 import AppInputBlock from '@/components/ui/AppInputBlock'
 import AppAlert from '@/components/ui/AppAlert'
 
-// TODO: валидация полей и сброс полей формы
-
 export default {
   name: 'Home',
   components: {AppAlert, AppInputBlock},
@@ -30,7 +28,7 @@ export default {
   data() {
     return {
       countInp: 0,
-      inputsArr: [this.countInp],
+      inputsArr: [0],
       inputsData: [],
       name: '',
       response: {},
@@ -59,7 +57,8 @@ export default {
       })
     },
     addNewBlock() {
-      this.inputsArr.push(++this.countInp)
+      this.countInp++
+      this.inputsArr.push(this.countInp)
     },
     handleInpData(dataInp) {
       this.inputsData[this.countInp] = dataInp

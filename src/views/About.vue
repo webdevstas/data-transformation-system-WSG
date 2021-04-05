@@ -1,5 +1,6 @@
 <template>
   <div class="about">
-    <h1>This is an about page</h1>
+    <h1>О приложении</h1>
+    <p>Перед Вами маленькое, но гордое приложение для учёта расходов.</p>
   </div>
 </template>

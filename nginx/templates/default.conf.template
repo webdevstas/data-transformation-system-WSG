@@ -1,0 +1,12 @@
+    server {
+        listen ${NGINX_PORT};
+        server_name ${NGINX_HOST};
+            location / {
+                root ${NGINX_ROOT};
+                try_files $uri $uri/ /index.html;
+            }
+            location ~ ^/(images|javascript|js|css|flash|media|static)/  {
+                  root ${NGINX_ROOT};
+                  expires 30d;
+                }
+        }
