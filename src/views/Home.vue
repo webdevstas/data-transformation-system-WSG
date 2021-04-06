@@ -38,10 +38,11 @@ export default {
     }
   },
   methods: {
+
     sendData() {
       this.$axios({
         method: 'POST',
-        url: 'http://localhost:3000/api/web',
+        url: process.env.DS_SERVER_API_URL,
         data: {
           goods: this.inputsData
         }
@@ -56,13 +57,16 @@ export default {
         this.openAlert('Ошибка при отправке на сервер!', 'danger')
       })
     },
+
     addNewBlock() {
       this.countInp++
       this.inputsArr.push(this.countInp)
     },
+
     handleInpData(dataInp) {
       this.inputsData[this.countInp] = dataInp
     },
+
     openAlert(title, type) {
       this.alertOpened = true
       this.alertTitle = title
